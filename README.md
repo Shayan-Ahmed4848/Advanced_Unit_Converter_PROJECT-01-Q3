@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🌟 Advanced Unit Converter  
 
 [![Streamlit](https://img.shields.io/badge/Made%20With-Streamlit-red?style=flat&logo=streamlit)](https://streamlit.io/)  
@@ -21,3 +22,6 @@
 ```sh
 git clone https://github.com/Shayan-Ahmed4848/Advanced_Unit_Converter_ASSIG-02.git
 cd Advanced_Unit_Converter_ASSIG-02
+=======
+"# Advanced_Unit_Converter_ASSIG-02" 
+>>>>>>> e5878aa (first commit)
