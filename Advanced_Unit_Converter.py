@@ -1,18 +1,17 @@
 import streamlit as st
-import pyttsx3
 import requests
 import json
 from pint import UnitRegistry
 
-# Initialize unit registry and text-to-speech engine
+# Initialize Unit Registry
 ureg = UnitRegistry()
-engine = pyttsx3.init()
 
-# Set Gemini API Key
-API_KEY = "AIzaSyAKAxs8wCaBD2WkXJwHIPpD9UyR05lZ_DQ"
+# ✅ Store API Key securely using Streamlit secrets (Avoid hardcoding!)
+API_KEY = st.secrets["GEMINI_API_KEY"]  # Use the exact key name from secrets.toml
 GEMINI_API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={API_KEY}"
 
 def unit_converter(value, from_unit, to_unit):
+    """Convert units using Pint library."""
     try:
         result = (value * ureg(from_unit)).to(to_unit)
         return f"{value} {from_unit} is {result:.4f} {to_unit}"
@@ -20,6 +19,7 @@ def unit_converter(value, from_unit, to_unit):
         return f"Error: {str(e)}"
 
 def ai_response(prompt):
+    """Get conversion response from Gemini AI."""
     try:
         headers = {"Content-Type": "application/json"}
         data = {
@@ -37,18 +37,11 @@ def ai_response(prompt):
     except Exception as e:
         return f"AI Error: {str(e)}"
 
-def speak(text):
-    try:
-        engine.say(text)
-        engine.runAndWait()
-    except Exception as e:
-        st.error(f"Text-to-speech error: {str(e)}")
-
-# Streamlit app configuration
+# ✅ Streamlit App Configuration
 st.set_page_config(page_title="AI Unit Converter", page_icon="🔄", layout="centered")
 st.title("🔄 AI-Powered Universal Unit Converter")
 
-# Mode selection
+# Mode Selection
 mode = st.radio("Choose Mode:", ["Simple", "Advanced"], horizontal=True)
 
 units = {
@@ -78,7 +71,6 @@ else:
             with st.spinner("Processing with AI..."):
                 ai_result = ai_response(user_input)
                 st.success(f"**AI Response:** {ai_result}")
-                speak(ai_result)
         else:
             st.error("Please enter a valid query.")
 
